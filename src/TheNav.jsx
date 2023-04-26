@@ -6,6 +6,8 @@ import {
   HeartIcon,
 } from "@heroicons/react/outline";
 
+import NavItem from "./NavItem";
+
 const activeNavItemClasses =
   "flex items-center text-white bg-[#282828] mx-2 px-4 py-2 rounded";
 const navItemClasses =
@@ -42,11 +44,8 @@ const navItems = [
 function TheNav() {
   return (
     <nav>
-      {navItems.map(({ classes, icon, label }) => (
-        <a key={label} href="/" className={classes}>
-          {icon}
-          <span className="ml-4 text-sm font-semibold">{label}</span>
-        </a>
+      {navItems.map((navItem) => (
+        <NavItem key={navItem.label} {...navItem} />
       ))}
     </nav>
   );
