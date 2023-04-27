@@ -10,12 +10,12 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
 
   if (subMenuItems) {
     let classes = "relative";
-    let classesBtn = `${classesBtn} flex justify-between items-center`;
+    let classesBtn = `${classesBtn} flex justify-between items-center peer`;
     let icon = <ChevronRightIcon className="h-4 w-4" />;
     let subMenu = (
       <PlaylistContextMenu
         menuItems={subMenuItems}
-        classes="absolute top-0 left-full bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default"
+        classes="absolute top-0 left-full bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default invisible peer-hover:visible hover:visible"
       />
     );
   }
