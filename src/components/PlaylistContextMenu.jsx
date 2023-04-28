@@ -1,7 +1,15 @@
 import PlaylistContextMenuItem from "./PlaylistContextMenuItem";
 
+import { useEffect } from "react";
+
 function PlaylistContextMenu({ menuItems, onClose, classes }) {
-  document.addEventListener("mousedown", onClose);
+  useEffect(() => {
+    document.addEventListener('mousedown', onClose);
+
+    return () => {
+      document.removeEventListener('mousedown', onClose);
+    };
+  });
 
   return (
     <ul className={classes}>
