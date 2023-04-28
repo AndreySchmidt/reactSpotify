@@ -21,7 +21,7 @@ function Playlist({ coverUrl, title, description, classes }) {
   return (
     <a
       href="/"
-      className={classes}
+      className={`relative p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group ${classes}`}
     >
       <div className="relative">
         <PlaylistCover url={coverUrl} />
