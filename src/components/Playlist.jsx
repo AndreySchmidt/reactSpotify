@@ -13,6 +13,9 @@ function Playlist({ coverUrl, title, description, classes }) {
     event.preventDefault();
     setIsContextMenuOpen(true);
   };
+  const closeContextMenu = () => {
+    setIsContextMenuOpen(false);
+  };
 
   const menuItems = [
     { label: "Add to Your Library" },
@@ -42,6 +45,7 @@ function Playlist({ coverUrl, title, description, classes }) {
 
       {isContextMenuOpen && (
         <PlaylistContextMenu
+          onClose={closeContextMenu}
           menuItems={menuItems}
           classes="absolute top-9 left-9 bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
         />

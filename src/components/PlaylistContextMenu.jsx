@@ -1,6 +1,8 @@
 import PlaylistContextMenuItem from "./PlaylistContextMenuItem";
 
-function PlaylistContextMenu({ menuItems, classes }) {
+function PlaylistContextMenu({ menuItems, onClose, classes }) {
+  document.addEventListener("mousedown", onClose);
+
   return (
     <ul className={classes}>
       {menuItems.map(({ label, subMenuItems }) => (
