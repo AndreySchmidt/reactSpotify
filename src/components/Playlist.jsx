@@ -4,17 +4,37 @@ import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
+const clickPosition = { x: null, y: null };
 
 function Playlist({ coverUrl, title, description, classes }) {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
+  const contextMenuRef = useRef(null);
 
   const bgClasses = isContextMenuOpen
-    ?  'bg-[#272727]'
-    :  'bg-[#181818] hover:bg-[#272727]';
+    ? "bg-[#272727]"
+    : "bg-[#181818] hover:bg-[#272727]";
+
+function updateContextMenuPosition()
+{
+  contextMenuRef.current.style.top = `${clickPosition.y}px`;
+  contextMenuRef.current.style.left = `${clickPosition.x}px`;
+}
+
+    useEffect(() => {
+      if(isContextMenuOpen)
+      {
+        updateContextMenuPosition();
+      }
+    });
 
   const openContextMenu = (event) => {
     event.preventDefault();
+
+    clickPosition.x = event.clientX;
+    clickPosition.y = event.clientY;
+
     setIsContextMenuOpen(true);
   };
   const closeContextMenu = () => {
@@ -36,7 +56,9 @@ function Playlist({ coverUrl, title, description, classes }) {
 
   return (
     <a
-      onClick={(event) => {event.preventDefault()}}
+      onClick={(event) => {
+        event.preventDefault();
+      }}
       onContextMenu={openContextMenu}
       href="/"
       className={`relative p-4 rounded-md ${bgClasses} duration-200 group ${classes}`}
@@ -50,9 +72,10 @@ function Playlist({ coverUrl, title, description, classes }) {
 
       {isContextMenuOpen && (
         <PlaylistContextMenu
+          ref={contextMenuRef}
           onClose={closeContextMenu}
           menuItems={menuItems}
-          classes="absolute top-9 left-9 bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
+          classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
         />
       )}
     </a>
