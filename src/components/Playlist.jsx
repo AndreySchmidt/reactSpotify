@@ -4,7 +4,7 @@ import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 
 const clickPosition = { x: null, y: null };
 
@@ -16,18 +16,16 @@ function Playlist({ coverUrl, title, description, classes }) {
     ? "bg-[#272727]"
     : "bg-[#181818] hover:bg-[#272727]";
 
-function updateContextMenuPosition()
-{
-  contextMenuRef.current.style.top = `${clickPosition.y}px`;
-  contextMenuRef.current.style.left = `${clickPosition.x}px`;
-}
+  function updateContextMenuPosition() {
+    contextMenuRef.current.style.top = `${clickPosition.y}px`;
+    contextMenuRef.current.style.left = `${clickPosition.x}px`;
+  }
 
-    useEffect(() => {
-      if(isContextMenuOpen)
-      {
-        updateContextMenuPosition();
-      }
-    });
+  useLayoutEffect(() => {
+    if (isContextMenuOpen) {
+      updateContextMenuPosition();
+    }
+  });
 
   const openContextMenu = (event) => {
     event.preventDefault();
