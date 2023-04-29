@@ -9,6 +9,10 @@ import { useState } from "react";
 function Playlist({ coverUrl, title, description, classes }) {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
 
+  const bgClasses = isContextMenuOpen
+    ?  'bg-[#272727]'
+    :  'bg-[#181818] hover:bg-[#272727]';
+
   const openContextMenu = (event) => {
     event.preventDefault();
     setIsContextMenuOpen(true);
@@ -35,7 +39,7 @@ function Playlist({ coverUrl, title, description, classes }) {
       onClick={(event) => {event.preventDefault()}}
       onContextMenu={openContextMenu}
       href="/"
-      className={`relative p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group ${classes}`}
+      className={`relative p-4 rounded-md ${bgClasses} duration-200 group ${classes}`}
     >
       <div className="relative">
         <PlaylistCover url={coverUrl} />
