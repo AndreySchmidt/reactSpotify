@@ -4,7 +4,7 @@ import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
 
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 
 const clickPosition = { x: null, y: null };
 
@@ -27,6 +27,30 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
     if (isContextMenuOpen) {
       updateContextMenuPosition();
     }
+  });
+
+  useEffect(() => {
+    if (!isContextMenuOpen) return;
+
+    function handleClickAway(event) {
+      if (!contextMenuRef.current.contains(event.target)) {
+        closeContextMenu();
+      }
+    }
+
+    function handleEsc(event) {
+      if (event.keyCode == 27) {
+        closeContextMenu();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickAway);
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickAway);
+      document.removeEventListener("keydown", handleEsc);
+    };
   });
 
   const openContextMenu = (event) => {
@@ -73,7 +97,6 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
       {isContextMenuOpen && (
         <PlaylistContextMenu
           ref={contextMenuRef}
-          onClose={closeContextMenu}
           menuItems={menuItems}
           classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
         />
