@@ -8,7 +8,7 @@ import { useState, useRef, useLayoutEffect } from "react";
 
 const clickPosition = { x: null, y: null };
 
-function Playlist({ coverUrl, title, description, classes }) {
+function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const contextMenuRef = useRef(null);
 
@@ -22,6 +22,8 @@ function Playlist({ coverUrl, title, description, classes }) {
   }
 
   useLayoutEffect(() => {
+    toggleSrolling(!isContextMenuOpen);
+
     if (isContextMenuOpen) {
       updateContextMenuPosition();
     }

@@ -57,7 +57,7 @@ const playlists = [
   },
 ];
 
-function TheMain() {
+function TheMain({ toggleSrolling }) {
   return (
     <main className="text-white relative">
       <div className="h-[275px] bg-gradient-to-b from-[#1f1f1f] to-[#121212] absolute w-full"></div>
@@ -80,6 +80,7 @@ function TheMain() {
             {playlists.map((playlist) => (
               <Playlist
                 key={playlist.title}
+                toggleSrolling={toggleSrolling}
                 {...playlist}
                 classes="relative p-4 rounded-md bg-[#181818] hover:bg-[#272727] duration-200 group"
               />
