@@ -5,21 +5,35 @@ import { useRef, useState } from "react";
 function PlaylistContextMenuItem({ children: label, subMenuItems }) {
   const menuItemRef = useRef(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuPositionClass, setMenuPositionClass] = useState("left-full");
+  const [menuPositionXClass, setMenuPositionXClass] = useState("left-full");
+  const [menuPositionYClass, setMenuPositionYClass] = useState("top-0");
 
-  function getMenuPositionClass() {
+  function getMenuPositionYClass() {
     const menuItem = menuItemRef.current;
-    const menuWidth = menuItem.offsetWidth;
+    const menuItemWidth = menuItem.offsetWidth;
     const windowWidth = window.innerWidth;
-    const menuItemEndCoord = menuItem.getBoundingClientRect().right;
-    const shouldMoveMenuLeft = menuWidth > windowWidth - menuItemEndCoord;
+    const menuItemRightCoordX = menuItem.getBoundingClientRect().right;
+    const shouldMoveMenuLeft =
+      menuItemWidth > windowWidth - menuItemRightCoordX;
 
     return shouldMoveMenuLeft ? "right-full" : "left-full";
   }
 
+  function getMenuPositionXClass() {
+    const windowHeight = window.innerHeight;
+    const menuItem = menuItemRef.current;
+    const menuHeight = menuItem.offsetHeight * subMenuItems.lenght;
+    const menuItemBottomCoordY = menuItem.getBoundingClientRect().bottom;
+    const shouldMoveMenuUp =
+      menuHeight > windowHeight - menuItemBottomCoordY;
+
+    return shouldMoveMenuUp ? "bottom-0" : "top-0";
+  }
+
   function openMenu() {
     setIsMenuOpen(true);
-    setMenuPositionClass(getMenuPositionClass());
+    setMenuPositionXClass(getMenuPositionXClass());
+    setMenuPositionYClass(getMenuPositionYClass());
   }
   function closeMenu() {
     setIsMenuOpen(false);
@@ -38,7 +52,7 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
     let subMenu = isMenuOpen && (
       <PlaylistContextMenu
         menuItems={subMenuItems}
-        classes={`absolute top-0 ${menuPositionClass} bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default`}
+        classes={`absolute ${menuPositionYClass} ${menuPositionXClass} bg-[#282828] text-[#eaeaea] text-sm p-1 rounded shadow-xl cursor-default`}
       />
     );
   }
