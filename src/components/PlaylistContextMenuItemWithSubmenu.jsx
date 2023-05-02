@@ -65,7 +65,7 @@ function PlaylistContextMenuItemWithSubmenu({
     closeMenuTimer.current = setTimeout(closeMenu, 100);
   }
   function stopCloseMenuTimer() {
-    cliarTimeout(closeMenuTimer.current);
+    clearTimeout(closeMenuTimer.current);
   }
 
   useEffect(() => stopCloseMenuTimer);
