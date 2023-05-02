@@ -1,13 +1,10 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function PlaylistContextMenuItem({ children: label, subMenuItems }) {
   const menuItemRef = useRef(null);
-
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [menuPositionClasses, setMenuPositionClasses] =
-  // useState("top-0 left-full");
+  const closeMenuTimer = null;
 
   const [menuState, setMenuState] = useState({
     isOpen: false,
@@ -40,20 +37,34 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
   }
 
   function openMenu() {
-    // setIsMenuOpen(true);
-    // setMenuPositionClasses(getMenuPositionClasses());
+    if (closeMenuTimer) {
+      stopCloseMenuTimer();
+
+      return;
+    }
+
     setMenuState({
       isOpen: true,
       positionClasses: getMenuPositionClasses(),
     });
   }
   function closeMenu() {
-    // setIsMenuOpen(false);
     setMenuState({
       isOpen: false,
-      positionClasses: '',
+      positionClasses: "",
     });
   }
+  function startCloseMenuTimer() {
+    closeMenuTimer = setTimeout(closeMenu, 1000);
+  }
+  function stopCloseMenuTimer() {
+    cliarTimeout(closeMenuTimer);
+  }
+
+  // useEffect(() => {
+  //   return () => stopCloseMenuTimer();
+  // });
+  useEffect(() => stopCloseMenuTimer);
 
   let classes = "";
   let classesBtn =
@@ -77,7 +88,7 @@ function PlaylistContextMenuItem({ children: label, subMenuItems }) {
     <li
       className={classes}
       onMouseEnter={openMenu}
-      onMouseLeave={closeMenu}
+      onMouseLeave={startCloseMenuTimer}
       ref={menuItemRef}
     >
       <button className={classesBtn}>
