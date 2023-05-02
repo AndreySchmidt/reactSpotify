@@ -8,7 +8,7 @@ function PlaylistContextMenuItemWithSubmenu({
   onMouseEnter: closePreviousSubmenuIfOpen,
 }) {
   const menuItemRef = useRef(null);
-  const closeMenuTimer = null;
+  const closeMenuTimer = useRef(null);
 
   const [menuState, setMenuState] = useState({
     isOpen: false,
@@ -61,10 +61,11 @@ function PlaylistContextMenuItemWithSubmenu({
     });
   }
   function startCloseMenuTimer() {
-    closeMenuTimer = setTimeout(closeMenu, 1000);
+
+    closeMenuTimer.current = setTimeout(closeMenu, 100);
   }
   function stopCloseMenuTimer() {
-    cliarTimeout(closeMenuTimer);
+    cliarTimeout(closeMenuTimer.current);
   }
 
   useEffect(() => stopCloseMenuTimer);
