@@ -3,12 +3,32 @@ import PlaylistPlayBtn from "./PlaylistPlayBtn";
 import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 
 const clickPosition = { x: null, y: null };
 
+function generateContextMenuItems(isAlternate = false) {
+  return [
+    { label: "Add to Your Library" },
+    {
+      label: "Share",
+      subMenuItems: [
+        {
+          label: isAlternate ? "Copy Spotify URI" : "Copy link to playlist",
+          classes: "min-w-[150px]",
+        },
+        { label: "Embed playlist" },
+      ],
+    },
+    { label: "About recommendations" },
+    { label: "Open in Desktop app" },
+  ];
+}
+
 function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
+  const [contextMenuItems, setContextMenuItems] = useState(
+    generateContextMenuItems()
+  );
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const contextMenuRef = useRef(null);
 
@@ -34,9 +54,6 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
   }
 
   function updateContextMenuPosition() {
-    // contextMenuRef.current.style.top = `${clickPosition.y}px`;
-    // contextMenuRef.current.style.left = `${clickPosition.x}px`;
-
     updateContextMenuXPosition();
     updateContextMenuYPosition();
   }
@@ -73,6 +90,27 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
     };
   });
 
+  useEffect(() => {
+    function handleAltKeydown({ key }) {
+      if (key === "Alt" && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems(true));
+      }
+    }
+    function handleAltKeyup({ key }) {
+      if (key === "Alt" && isContextMenuOpen) {
+        setContextMenuItems(generateContextMenuItems(false));
+      }
+    }
+
+    document.addEventListener("keydown".handleAltKeydown);
+    document.addEventListener("keyup".handleAltKeyup);
+
+    return () => {
+      document.removeEventListener("keydown".handleAltKeydown);
+      document.removeEventListener("keyup".handleAltKeyup);
+    };
+  });
+
   const openContextMenu = (event) => {
     event.preventDefault();
 
@@ -84,19 +122,6 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
   const closeContextMenu = () => {
     setIsContextMenuOpen(false);
   };
-
-  const menuItems = [
-    { label: "Add to Your Library" },
-    {
-      label: "Share",
-      subMenuItems: [
-        { label: "Copy link to playlist", alternateLabel: "Copy Spotify URI", classes: 'min-w-[150px]' },
-        { label: "Embed playlist" },
-      ],
-    },
-    { label: "About recommendations" },
-    { label: "Open in Desktop app" },
-  ];
 
   return (
     <a
@@ -117,7 +142,7 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
       {isContextMenuOpen && (
         <PlaylistContextMenu
           ref={contextMenuRef}
-          menuItems={menuItems}
+          menuItems={contextMenuItems}
           classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
         />
       )}
