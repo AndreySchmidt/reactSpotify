@@ -61,24 +61,18 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
   useLayoutEffect(() => {
     toggleSrolling(!isContextMenuOpen);
 
-    if (isContextMenuOpen) {
-      updateContextMenuPosition();
-    }
+    if (isContextMenuOpen) updateContextMenuPosition();
   });
 
   useEffect(() => {
     if (!isContextMenuOpen) return;
 
     function handleClickAway(event) {
-      if (!contextMenuRef.current.contains(event.target)) {
-        closeContextMenu();
-      }
+      if (!contextMenuRef.current.contains(event.target)) closeContextMenu();
     }
 
-    function handleEsc(event) {
-      if (event.keyCode == 27) {
-        closeContextMenu();
-      }
+    function handleEsc({ key }) {
+      if (key === "Escape") closeContextMenu();
     }
 
     document.addEventListener("mousedown", handleClickAway);
@@ -92,14 +86,12 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
 
   useEffect(() => {
     function handleAltKeydown({ key }) {
-      if (key === "Alt" && isContextMenuOpen) {
+      if (key === "Alt" && isContextMenuOpen)
         setContextMenuItems(generateContextMenuItems(true));
-      }
     }
     function handleAltKeyup({ key }) {
-      if (key === "Alt" && isContextMenuOpen) {
+      if (key === "Alt" && isContextMenuOpen)
         setContextMenuItems(generateContextMenuItems(false));
-      }
     }
 
     document.addEventListener("keydown".handleAltKeydown);
@@ -143,7 +135,7 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
         <PlaylistContextMenu
           ref={contextMenuRef}
           menuItems={contextMenuItems}
-          classes="fixed bg-[#282828] text-[#eaeaea] text-sm divide-y divide-[#3e3e3e] p-1 rounded shadow-xl cursor-default whitespace-nowrap z-10"
+          classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
     </a>
