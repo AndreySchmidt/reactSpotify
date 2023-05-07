@@ -1,86 +1,29 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-import { useEffect, useRef, useState } from "react";
+import useSubmenu from "./hook/useContextSubmenu";
+import { useRef } from "react";
 
 function PlaylistContextMenuItemWithSubmenu({
   children: label,
   subMenuItems,
   onMouseEnter: closePreviousSubmenuIfOpen,
 }) {
-  const menuItemRef = useRef(null);
-  const closeMenuTimer = useRef(null);
+  const ref = useRef(null);
+  const bgClass = submenu.isOpen ? "bg-[#3e3e3e]" : "hover:bg-[#3e3e3e]";
 
-  const bgClass = menuState.isOpen ? 'bg-[#3e3e3e]' : 'hover:bg-[#3e3e3e]';
-
-  const [menuState, setMenuState] = useState({
-    isOpen: false,
-    positionClasses: "",
-  });
-
-  function getMenuPositionClasses() {
-    return `${getMenuPositionYClass()} ${getMenuPositionXClass()}`;
-  }
-
-  function getMenuPositionYClass() {
-    const menuItem = menuItemRef.current;
-    const menuItemWidth = menuItem.offsetWidth;
-    const windowWidth = window.innerWidth;
-    const menuItemRightCoordX = menuItem.getBoundingClientRect().right;
-    const shouldMoveMenuLeft =
-      menuItemWidth > windowWidth - menuItemRightCoordX;
-
-    return shouldMoveMenuLeft ? "right-full" : "left-full";
-  }
-
-  function getMenuPositionXClass() {
-    const windowHeight = window.innerHeight;
-    const menuItem = menuItemRef.current;
-    const menuHeight = menuItem.offsetHeight * subMenuItems.lenght;
-    const menuItemBottomCoordY = menuItem.getBoundingClientRect().bottom;
-    const shouldMoveMenuUp = menuHeight > windowHeight - menuItemBottomCoordY;
-
-    return shouldMoveMenuUp ? "bottom-0" : "top-0";
-  }
-
-  function openMenu() {
-    closePreviousSubmenuIfOpen(startCloseMenuTimer);
-
-    if (closeMenuTimer) {
-      stopCloseMenuTimer();
-
-      return;
-    }
-
-    setMenuState({
-      isOpen: true,
-      positionClasses: getMenuPositionClasses(),
-    });
-  }
-  function closeMenu() {
-    setMenuState({
-      isOpen: false,
-      positionClasses: "",
-    });
-  }
-  function startCloseMenuTimer() {
-
-    closeMenuTimer.current = setTimeout(closeMenu, 100);
-  }
-  function stopCloseMenuTimer() {
-    clearTimeout(closeMenuTimer.current);
-  }
-
-  useEffect(() => stopCloseMenuTimer);
+  const submenu = useSubmenu(subMenuItems, closePreviousSubmenuIfOpen, ref);
 
   return (
-    <li className="relative" onMouseEnter={openMenu} ref={menuItemRef}>
-      <button className={`w-full p-3 text-left hover:text-white cursor-default flex justify-between items-center ${bgClass}`}>
+    <li className="relative" onMouseEnter={submenu.open} ref={ref}>
+      <button
+        className={`w-full p-3 text-left hover:text-white cursor-default flex justify-between items-center ${bgClass}`}
+      >
         {label} <ChevronRightIcon className="h-4 w-4" />
       </button>
-      {menuState.isOpen && (
+      {submenu.isOpen && (
         <PlaylistContextMenu
-          menuItems={subMenuItems}
-          classes={`absolute ${menuState.positionClasses}`}
+          menuItems={submenu.items}
+          classes={`absolute ${submenu.positionClasses}`}
         />
       )}
     </li>
