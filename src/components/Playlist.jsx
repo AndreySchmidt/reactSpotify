@@ -4,7 +4,7 @@ import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
 
-import useContextMenu from "../hooks/useContextMenu";
+import useMenu from "../hooks/useContextMenu";
 import { useEffect, useLayoutEffect, useState } from "react";
 
 function generateMenuItems(isAlternate = false) {
@@ -26,20 +26,18 @@ function generateMenuItems(isAlternate = false) {
 }
 
 function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
-  const [menuItems, setMenuItems] = useState(generateMenuItems());
+  const [menuItems, setMenuItems] = useState(generateMenuItems);
+  // const [menuItems, setMenuItems] = useState(() => generateMenuItems());
 
-  const {
-    openContextMenu: openMenu,
-    isContextMenuOpen: isMenuOpen,
-    contextMenuRef: menuRef,
-  } = useContextMenu();
+  const menu = useMenu(menuItems);
+  // const { open: openMenu, isOpen: isMenuOpen, ref: menuRef } = useMenu();
 
   useLayoutEffect(() => {
-    toggleSrolling(!isMenuOpen);
+    toggleSrolling(!menu.isOpen);
   });
 
   useEffect(() => {
-    if (!isMenuOpen) return;
+    if (!menu.isOpen) return;
 
     function handleAltKeydown({ key }) {
       if (key === "Alt") setMenuItems(generateMenuItems(true));
@@ -57,7 +55,7 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
     };
   });
 
-  const bgClasses = isMenuOpen
+  const bgClasses = menu.isOpen
     ? "bg-[#272727]"
     : "bg-[#181818] hover:bg-[#272727]";
 
@@ -66,7 +64,7 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
       onClick={(event) => {
         event.preventDefault();
       }}
-      onContextMenu={openMenu}
+      onContextMenu={menu.open}
       href="/"
       className={`relative p-4 rounded-md ${bgClasses} duration-200 group ${classes}`}
     >
@@ -79,8 +77,8 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
 
       {isContextMenuOpen && (
         <PlaylistContextMenu
-          ref={menuRef}
-          menuItems={menuItems}
+          ref={menu.ref}
+          menuItems={menu.items}
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
