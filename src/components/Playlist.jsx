@@ -3,6 +3,7 @@ import PlaylistPlayBtn from "./PlaylistPlayBtn";
 import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
+import BaseToast from "./BaseToast";
 
 import useMenu from "../hooks/useContextMenu";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -16,6 +17,7 @@ function generateMenuItems(isAlternate = false) {
         {
           label: isAlternate ? "Copy Spotify URI" : "Copy link to playlist",
           classes: "min-w-[150px]",
+          action: () => {},
         },
         { label: "Embed playlist" },
       ],
@@ -60,29 +62,32 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
     : "bg-[#181818] hover:bg-[#272727]";
 
   return (
-    <a
-      onClick={(event) => {
-        event.preventDefault();
-      }}
-      onContextMenu={menu.open}
-      href="/"
-      className={`relative p-4 rounded-md ${bgClasses} duration-200 group ${classes}`}
-    >
-      <div className="relative">
-        <PlaylistCover url={coverUrl} />
-        <PlaylistPlayBtn />
-      </div>
-      <PlaylistTitle title={title} />
-      <PlaylistDescription description={description} />
+    <>
+      <a
+        onClick={(event) => {
+          event.preventDefault();
+        }}
+        onContextMenu={menu.open}
+        href="/"
+        className={`relative p-4 rounded-md ${bgClasses} duration-200 group ${classes}`}
+      >
+        <div className="relative">
+          <PlaylistCover url={coverUrl} />
+          <PlaylistPlayBtn />
+        </div>
+        <PlaylistTitle title={title} />
+        <PlaylistDescription description={description} />
 
-      {isContextMenuOpen && (
-        <PlaylistContextMenu
-          ref={menu.ref}
-          menuItems={menu.items}
-          classes="fixed divide-y divide-[#3e3e3e]"
-        />
-      )}
-    </a>
+        {isContextMenuOpen && (
+          <PlaylistContextMenu
+            ref={menu.ref}
+            menuItems={menu.items}
+            classes="fixed divide-y divide-[#3e3e3e]"
+          />
+        )}
+      </a>
+      <BaseToast />
+    </>
   );
 }
 

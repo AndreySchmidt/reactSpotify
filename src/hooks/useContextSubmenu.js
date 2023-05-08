@@ -61,6 +61,6 @@ function useContextSubmenu(items, closePreviousIfOpen, menuItemRef) {
 
   useEffect(() => stopCloseTimer);
 
-  return { open, items, ...state };
+  return { open, items, ...state};
 }
 export default useContextSubmenu;
