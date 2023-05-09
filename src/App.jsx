@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import TheSidebar from "./components/TheSidebar";
 import TheHeader from "./components/TheHeader";
 import TheMain from "./components/TheMain";
@@ -9,8 +9,6 @@ import BaseToast from "./BaseToast";
 // import './App.css';
 
 function App() {
-  const [toastMessage, setToastMessage] = useState("");
-  const closeToastTimer = useRef();
   const toastRef = useRef();
   const contentWrapperRef = useRef(null);
   let isScrollingEnabled = true;
@@ -27,12 +25,7 @@ function App() {
   }
 
   function showToast(message) {
-   clearTimeout(closeToastTimer.current)
-
-    setToastMessage(message);
-    toastRef.current.show();
-
-    closeToastTimer.current = setTimeout(toastRef.current.hide, 3000);
+    toastRef.current.show(message);
   }
 
   useEffect(() => {
@@ -52,7 +45,7 @@ function App() {
         </div>
       </div>
       <TheRegistration />
-      <BaseToast ref={toastRef}>{toastMessage}</BaseToast>
+      <BaseToast ref={toastRef} />
     </>
   );
 }
