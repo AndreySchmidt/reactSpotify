@@ -6,33 +6,38 @@ import PlaylistContextMenu from "./PlaylistContextMenu";
 import BaseToast from "./BaseToast";
 
 import useMenu from "../hooks/useContextMenu";
-import { useEffect, useLayoutEffect, useState } from "react";
-
-function generateMenuItems(isAlternate = false) {
-  return [
-    { label: "Add to Your Library" },
-    {
-      label: "Share",
-      subMenuItems: [
-        {
-          label: isAlternate ? "Copy Spotify URI" : "Copy link to playlist",
-          classes: "min-w-[150px]",
-          action: () => {},
-        },
-        { label: "Embed playlist" },
-      ],
-    },
-    { label: "About recommendations" },
-    { label: "Open in Desktop app" },
-  ];
-}
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
-  // const [menuItems, setMenuItems] = useState(() => generateMenuItems());
+  const [isToastShown, setIsToastShown] = useState(false);
+  const closeToastTimer = useRef();
 
   const menu = useMenu(menuItems);
-  // const { open: openMenu, isOpen: isMenuOpen, ref: menuRef } = useMenu();
+
+  function generateMenuItems(isAlternate = false) {
+    return [
+      { label: "Add to Your Library" },
+      {
+        label: "Share",
+        subMenuItems: [
+          {
+            label: isAlternate ? "Copy Spotify URI" : "Copy link to playlist",
+            classes: "min-w-[150px]",
+            action: () => {
+              navigator.clipboard.writeText(title).then(() => {
+                menu.close();
+                showToast();
+              });
+            },
+          },
+          { label: "Embed playlist" },
+        ],
+      },
+      { label: "About recommendations" },
+      { label: "Open in Desktop app" },
+    ];
+  }
 
   useLayoutEffect(() => {
     toggleSrolling(!menu.isOpen);
@@ -56,6 +61,16 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
       document.removeEventListener("keyup".handleAltKeyup);
     };
   });
+
+  function showToast() {
+    setIsToastShown(true);
+
+    closeToastTimer.current = setTimeout(hideToast, 3000);
+  }
+
+  function hideToast() {
+    setIsToastShown(false);
+  }
 
   const bgClasses = menu.isOpen
     ? "bg-[#272727]"
@@ -86,7 +101,7 @@ function Playlist({ coverUrl, title, description, classes, toggleSrolling }) {
           />
         )}
       </a>
-      <BaseToast />
+      {isToastShown && <BaseToast>Link copied to clipboard</BaseToast>}
     </>
   );
 }
