@@ -1,12 +1,32 @@
+import { useEffect, useRef, useState } from "react";
 import BaseBtn from "./BaseBtn";
 
 function BasePopover() {
+  const [classes, setClasses] = useState("");
+  const ref = useRef();
+
+  function hide() {
+    setClasses("opacity-0 pointer-events-none");
+  }
+
+  useEffect(() => {
+    function handleClickAway({ target }) {
+      if (!ref.current.contains(target)) hide();
+
+      document.addEventListener("mousedown".handleClickAway);
+      return () => document.removeEventListener("mousedown".handleClickAway);
+    }
+  });
+
   return (
-    <div className="fixed top-[227x] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 min-w-[330px] select-none">
-      <h3 className="text-lg font-bold mb-2 ">Create a playlist</h3>
+    <div
+      className={`transition duration-300 fixed top-[227x] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 min-w-[330px] select-none ${classes}`}
+      ref={ref}
+    >
+      <h3 className="text-lg font-bold mb-2">Create a playlist</h3>
       <p className="text-xs">Log in to create and share playlists.</p>
       <div className="mt-6 text-right">
-        <BaseBtn>Not now</BaseBtn>
+        <BaseBtn onClick={hide}>Not now</BaseBtn>
         <BaseBtn primary>Log in</BaseBtn>
       </div>
       <div className="w-20 h-20 absolute -top-4 -left-20 flex justify-end items-center overflow-hidden pointer-events-none">
