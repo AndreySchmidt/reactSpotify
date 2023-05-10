@@ -5,6 +5,7 @@ import TheMain from "./components/TheMain";
 import TheRegistration from "./components/TheRegistration";
 import TheSidebarOverlay from "./components/TheSidebarOverlay";
 import BaseToast from "./BaseToast";
+import BasePopover from "./BasePopover";
 
 // import './App.css';
 
@@ -46,6 +47,7 @@ function App() {
       </div>
       <TheRegistration />
       <BaseToast ref={toastRef} />
+      <BasePopover />
     </>
   );
 }
