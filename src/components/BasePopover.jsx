@@ -1,5 +1,4 @@
-import TheSignupBtn from "./TheSignupBtn";
-import TheLoginBtn from "./TheLoginBtn";
+import BaseBtn from "./BaseBtn";
 
 function BasePopover() {
   return (
@@ -7,8 +6,8 @@ function BasePopover() {
       <h3 className="text-lg font-bold mb-2 ">Create a playlist</h3>
       <p className="text-xs">Log in to create and share playlists.</p>
       <div className="mt-6 text-right">
-        <TheSignupBtn />
-        <TheLoginBtn />
+        <BaseBtn>Not now</BaseBtn>
+        <BaseBtn primary>Log in</BaseBtn>
       </div>
       <div className="w-20 h-20 absolute -top-4 -left-20 flex justify-end items-center overflow-hidden pointer-events-none">
         <div className="w-3 h-3 bg-[#0e72ea] shadow-3xl translate-x-1/2 rotate-45 pointer-events-auto"></div>

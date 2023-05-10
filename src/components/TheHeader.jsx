@@ -4,8 +4,7 @@ import {
   MenuIcon,
 } from "@heroicons/react/outline";
 
-import TheSignupBtn from "./TheSignupBtn";
-import TheLoginBtn from "./TheLoginBtn";
+import BaseBtn from "./BaseBtn";
 
 function TheHeader() {
   return (
@@ -25,8 +24,8 @@ function TheHeader() {
         </a>
       </div>
       <div>
-        <TheSignupBtn />
-        <TheLoginBtn />
+        <BaseBtn classes="text-gray-400 hover:text-white">Sign up</BaseBtn>
+        <BaseBtn primary>Log in</BaseBtn>
       </div>
     </header>
   );
