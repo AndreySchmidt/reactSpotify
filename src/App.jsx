@@ -11,6 +11,8 @@ import BasePopover from "./BasePopover";
 
 function App() {
   const toastRef = useRef();
+  const popoverRef = useRef();
+
   const contentWrapperRef = useRef(null);
   let isScrollingEnabled = true;
 
@@ -28,6 +30,9 @@ function App() {
   function showToast(message) {
     toastRef.current.show(message);
   }
+  function showPopover() {
+    popoverRef.current.show();
+  }
 
   useEffect(() => {
     const contentWrapper = contentWrapperRef.current;
@@ -38,7 +43,7 @@ function App() {
   return (
     <>
       <div className="flex grow overflow-auto">
-        <TheSidebar />
+        <TheSidebar showPopover={showPopover} />
         <TheSidebarOverlay />
         <div ref={contentWrapperRef} className="flex-1 overflow-auto">
           <TheHeader />
@@ -47,7 +52,7 @@ function App() {
       </div>
       <TheRegistration />
       <BaseToast ref={toastRef} />
-      <BasePopover />
+      <BasePopover ref={popoverRef} />
     </>
   );
 }
