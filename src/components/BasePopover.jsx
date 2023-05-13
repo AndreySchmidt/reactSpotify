@@ -2,14 +2,14 @@ import { useImperativeHandle, useEffect, useRef, useState, forwardRef } from "re
 import BaseBtn from "./BaseBtn";
 
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState("opacity-0 pointer-events-none");
+  const [classes, setClasses] = useState("opacity-0 translate-x-1 pointer-events-none");
   const nodeRef = useRef();
 
   function show() {
     setClasses("opacity-1");
   }
   function hide() {
-    setClasses("opacity-0 pointer-events-none");
+    setClasses("opacity-0 translate-x-1 pointer-events-none");
   }
 
   useEffect(() => {

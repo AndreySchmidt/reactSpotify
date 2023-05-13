@@ -47,7 +47,7 @@ function App() {
         <TheSidebarOverlay />
         <div ref={contentWrapperRef} className="flex-1 overflow-auto">
           <TheHeader />
-          <TheMain showToast={showToast} toggleSrolling={toggleSrolling} />
+          <TheMain showPopover={showPopover} showToast={showToast} toggleSrolling={toggleSrolling} />
         </div>
       </div>
       <TheRegistration />

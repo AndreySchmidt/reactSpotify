@@ -7,14 +7,28 @@ import PlaylistContextMenu from "./PlaylistContextMenu";
 import useMenu from "../hooks/useContextMenu";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-function Playlist({ coverUrl, title, description, classes, toggleSrolling, showToast }) {
+function Playlist({
+  coverUrl,
+  title,
+  description,
+  classes,
+  toggleSrolling,
+  showToast,
+  showPopover,
+}) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
   const menu = useMenu(menuItems);
 
   function generateMenuItems(isAlternate = false) {
     return [
-      { label: "Add to Your Library" },
+      {
+        label: "Add to Your Library",
+        action: () => {
+          menu.close();
+          showPopover();
+        },
+      },
       {
         label: "Share",
         subMenuItems: [
