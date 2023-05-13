@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 
 function BaseToast(_, ref) {
   const hideTimer = useRef();
@@ -31,4 +31,4 @@ function BaseToast(_, ref) {
   );
 }
 
-export default React.forwardRef(BaseToast);
+export default forwardRef(BaseToast);

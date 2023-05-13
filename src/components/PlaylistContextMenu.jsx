@@ -1,7 +1,7 @@
 import PlaylistContextMenuItem from "./PlaylistContextMenuItem";
 import PlaylistContextMenuItemWithSubmenu from "./PlaylistContextMenuItemWithSubmenu";
 
-import React, { useRef } from "react";
+import { forwardRef, useRef } from "react";
 
 function PlaylistContextMenu({ menuItems, classes }, ref) {
   let closePreviousSubmenu = useRef(null);
@@ -45,4 +45,4 @@ function PlaylistContextMenu({ menuItems, classes }, ref) {
   );
 }
 
-export default React.forwardRef(PlaylistContextMenu);
+export default forwardRef(PlaylistContextMenu);

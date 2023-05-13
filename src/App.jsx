@@ -13,8 +13,14 @@ function App() {
   const toastRef = useRef();
   const popoverRef = useRef();
 
-  const contentWrapperRef = useRef(null);
+  const contentWrapperRef = useRef();
   let isScrollingEnabled = true;
+
+  useEffect(() => {
+    const contentWrapper = contentWrapperRef.current;
+    contentWrapper.addEventListener("wheel", handleScrolling);
+    return () => contentWrapper.removeEventListener("wheel", handleScrolling);
+  });
 
   function toggleSrolling(isEnabled) {
     isScrollingEnabled = isEnabled;
@@ -34,12 +40,6 @@ function App() {
     popoverRef.current.show();
   }
 
-  useEffect(() => {
-    const contentWrapper = contentWrapperRef.current;
-    contentWrapper.addEventListener("wheel", handleScrolling);
-    return () => contentWrapper.removeEventListener("wheel", handleScrolling);
-  });
-
   return (
     <>
       <div className="flex grow overflow-auto">
@@ -47,7 +47,11 @@ function App() {
         <TheSidebarOverlay />
         <div ref={contentWrapperRef} className="flex-1 overflow-auto">
           <TheHeader />
-          <TheMain showPopover={showPopover} showToast={showToast} toggleSrolling={toggleSrolling} />
+          <TheMain
+            showPopover={showPopover}
+            showToast={showToast}
+            toggleSrolling={toggleSrolling}
+          />
         </div>
       </div>
       <TheRegistration />
