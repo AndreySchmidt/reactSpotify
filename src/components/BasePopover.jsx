@@ -13,25 +13,37 @@ function BasePopover(_, ref) {
   const [classes, setClasses] = useState(HIDDEN_CLASSES);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
+  const [target, setTarget] = useState();
 
   const nodeRef = useRef();
 
-  function show(title, description, target) {
-    moveTo(target);
+  function show(title, description, nextTarget, offset) {
+    if (target === nextTarget) return;
+
+    moveTo(nextTarget, offset);
+    setTarget(nextTarget);
     setTitle(title);
     setDescription(description);
     setClasses("");
   }
   function hide() {
+    setTarget(null);
     setClasses(HIDDEN_CLASSES);
   }
 
-  function moveTo(target) {
-    const offset = target;
-    if (target instanceof Element) {
+  function moveTo(target, offset) {
+    // const offset = target;
+    if (!offset) {
+      // if (target instanceof Element) {
       const { top, right, height } = target.getBoundingClientRect();
-      offset.top = top - (height / 3) * 2;
-      offset.left = right + 30;
+
+      offset = {
+        top: (offset.top = top - (height / 3) * 2),
+        left: (offset.left = right + 30),
+      };
+
+      // offset.top = top - (height / 3) * 2;
+      // offset.left = right + 30;
     }
 
     nodeRef.current.style.top = `${offset.top}px`;
@@ -39,8 +51,12 @@ function BasePopover(_, ref) {
   }
 
   useEffect(() => {
-    function handleClickAway({ target }) {
-      if (!nodeRef.current.contains(target)) hide();
+    if (!target) return;
+
+    function handleClickAway(event) {
+      if (target.parentNode.contains(event.target)) return;
+
+      if (!nodeRef.current.contains(event.target)) hide();
 
       document.addEventListener("mousedown".handleClickAway);
       return () => document.removeEventListener("mousedown".handleClickAway);
