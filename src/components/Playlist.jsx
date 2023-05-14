@@ -14,7 +14,6 @@ function Playlist({
   classes,
   toggleSrolling,
   showToast,
-  showPopover,
 }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
@@ -26,7 +25,7 @@ function Playlist({
         label: "Add to Your Library",
         action: () => {
           menu.close();
-          showPopover();
+          document.querySelector('nav a:nth-child(4)').click();
         },
       },
       {
