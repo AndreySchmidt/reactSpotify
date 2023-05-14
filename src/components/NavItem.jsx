@@ -4,7 +4,7 @@ function handleClick(event){
   if(!onClick) return;
 
   event.preventDefault();
-  onClick();
+  onClick(event.currentTarget);
 }
 
   return (

@@ -16,13 +16,21 @@ function BasePopover(_, ref) {
 
   const nodeRef = useRef();
 
-  function show(title, description) {
+  function show(title, description, target) {
+    moveTo(target);
     setTitle(title);
     setDescription(description);
     setClasses("");
   }
   function hide() {
     setClasses(HIDDEN_CLASSES);
+  }
+
+  function moveTo(target){
+    const {top, right, height} = target.getBoundingClientRect();
+
+    nodeRef.current.style.top = `${top}px`;
+    nodeRef.current.style.left = `${right}px`;
   }
 
   useEffect(() => {
@@ -38,7 +46,7 @@ function BasePopover(_, ref) {
 
   return (
     <div
-      className={`transition duration-300 fixed top-[227x] left-[200px] z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none ${classes}`}
+      className={`transition duration-300 fixed z-30 bg-[#0e72ea] text-white tracking-wide rounded-lg shadow-3xl p-4 w-[330px] select-none ${classes}`}
       ref={nodeRef}
     >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
