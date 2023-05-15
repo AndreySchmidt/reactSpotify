@@ -5,7 +5,9 @@ import {
   useState,
   forwardRef,
 } from "react";
+
 import BaseBtn from "./BaseBtn";
+import BasePopoverTriangle from "./BasePopoverTriangle";
 
 const isSmallScreen = window.innerWidth < 700;
 const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
@@ -75,9 +77,7 @@ function BasePopover(_, ref) {
         <BaseBtn onClick={hide}>Not now</BaseBtn>
         <BaseBtn primary>Log in</BaseBtn>
       </div>
-      <div className="w-20 h-20 absolute -top-4 -left-20 flex justify-end items-center overflow-hidden pointer-events-none">
-        <div className="w-3 h-3 bg-[#0e72ea] shadow-3xl translate-x-1/2 rotate-45 pointer-events-auto"></div>
-      </div>
+      <BasePopoverTriangle />
     </div>
   );
 }
