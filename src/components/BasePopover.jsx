@@ -20,7 +20,9 @@ function BasePopover(_, ref) {
   function show(title, description, nextTarget, offset) {
     if (target === nextTarget) return;
 
-    moveTo(nextTarget, offset);
+    // offset = offset ? offset : calculateTargetOffset(nextTarget);
+
+    moveTo(offset ? offset : calculateTargetOffset(nextTarget));
     setTarget(nextTarget);
     setTitle(title);
     setDescription(description);
@@ -31,23 +33,18 @@ function BasePopover(_, ref) {
     setClasses(HIDDEN_CLASSES);
   }
 
-  function moveTo(target, offset) {
-    // const offset = target;
-    if (!offset) {
-      // if (target instanceof Element) {
-      const { top, right, height } = target.getBoundingClientRect();
-
-      offset = {
-        top: (offset.top = top - (height / 3) * 2),
-        left: (offset.left = right + 30),
-      };
-
-      // offset.top = top - (height / 3) * 2;
-      // offset.left = right + 30;
-    }
-
+  function moveTo(offset) {
     nodeRef.current.style.top = `${offset.top}px`;
     nodeRef.current.style.left = `${offset.left}px`;
+  }
+
+  function calculateTargetOffset(target) {
+    const { top, right, height } = target.getBoundingClientRect();
+
+    return {
+      top: (offset.top = top - (height / 3) * 2),
+      left: (offset.left = right + 30),
+    };
   }
 
   useEffect(() => {
