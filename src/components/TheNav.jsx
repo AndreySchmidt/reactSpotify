@@ -54,17 +54,22 @@ function TheNav() {
       classes: navItemClasses,
       icon: <HeartIcon className="h-6 w-6" />,
       action: (target) => {
-        const { top, right, height } = target.getBoundingClientRect();
-        const offset = {
-          top: top - (height / 3) * 2,
-          left: right + 130,
-        };
-        showPopover(
-          "Enjoy your liked songs",
-          "Log in to see all the songs ...",
-          target,
-          offset
-        );
+        let offset = null;
+
+        if (window.innerWidth >= 700) {
+          const { top, right, height } = target.getBoundingClientRect();
+          offset = {
+            top: top - (height / 3) * 2,
+            left: right + 130,
+          };
+
+          showPopover(
+            "Enjoy your liked songs",
+            "Log in to see all the songs ...",
+            target,
+            offset
+          );
+        }
       },
     },
   ];
