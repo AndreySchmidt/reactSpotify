@@ -9,22 +9,29 @@ import {
 import BaseBtn from "./BaseBtn";
 import BasePopoverTriangle from "./BasePopoverTriangle";
 
-const isSmallScreen = window.innerWidth < 900;
-const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
-const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
+const MIN_DESCTOP_WIDTH = 900;
 
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState(HIDDEN_CLASSES);
+  const [classes, setClasses] = useState(getHiddenClasses);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [target, setTarget] = useState();
 
   const nodeRef = useRef();
 
+  // const isSmallScreen = window.innerWidth < MIN_DESCTOP_WIDTH;
+  const [isSmallScreen, setIsSmallScreen] = useState(
+    window.innerWidth < MIN_DESCTOP_WIDTH
+  );
+  function getHiddenClasses() {
+    // const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
+    // const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
+    const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
+    return `opacity-0 ${translateClass} pointer-events-none`;
+  }
+
   function show(title, description, nextTarget, offset) {
     if (target === nextTarget) return;
-
-    // offset = offset ? offset : calculateTargetOffset(nextTarget);
 
     moveTo(offset ? offset : calculateTargetOffset(nextTarget));
     setTarget(nextTarget);
@@ -34,7 +41,7 @@ function BasePopover(_, ref) {
   }
   function hide() {
     setTarget(null);
-    setClasses(HIDDEN_CLASSES);
+    setClasses(getHiddenClasses);
   }
 
   function moveTo(offset) {
@@ -52,31 +59,34 @@ function BasePopover(_, ref) {
   }
 
   useEffect(() => {
-    if (!target) return;
+    // if (!target) return;
 
     function handleResize() {
-      if (screenHasBecomeSmall() || screenHasBecomeWide()) hide();
+      if (screenHasBecomeSmall() || screenHasBecomeWide()) {
+        hide();
+        setIsSmallScreen(window.innerWidth < MIN_DESCTOP_WIDTH);
+      }
     }
 
     function screenHasBecomeSmall() {
-      return window.innerWidth < 900 && !isSmallScreen;
+      return window.innerWidth < MIN_DESCTOP_WIDTH && !isSmallScreen;
     }
     function screenHasBecomeWide() {
-      return window.innerWidth >= 900 && isSmallScreen;
+      return window.innerWidth >= MIN_DESCTOP_WIDTH && isSmallScreen;
     }
     function handleClickAway(event) {
-      if (target.parentNode.contains(event.target)) return;
+      if (target && target.parentNode.contains(event.target)) return;
 
       if (!nodeRef.current.contains(event.target)) hide();
-
-      window.addEventListener("resize".handleResize);
-      document.addEventListener("mousedown".handleClickAway);
-
-      return () => {
-        document.removeEventListener("mousedown".handleClickAway);
-        window.removeEventListener("resize".handleResize);
-      };
     }
+
+    window.addEventListener("resize".handleResize);
+    document.addEventListener("mousedown".handleClickAway);
+
+    return () => {
+      document.removeEventListener("mousedown".handleClickAway);
+      window.removeEventListener("resize".handleResize);
+    };
   });
 
   useImperativeHandle(ref, () => ({ show }));
