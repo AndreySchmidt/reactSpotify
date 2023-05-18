@@ -1,4 +1,4 @@
-import { debounce } from "../utils";
+import { MIN_DESCTOP_WIDTH, debounce } from "../utils";
 import {
   useImperativeHandle,
   useEffect,
@@ -10,7 +10,12 @@ import {
 import BaseBtn from "./BaseBtn";
 import BasePopoverTriangle from "./BasePopoverTriangle";
 
-const MIN_DESCTOP_WIDTH = 900;
+function isCurrentWindowWidthSmall() {
+  return window.innerWidth < MIN_DESCTOP_WIDTH;
+}
+function isCurrentWindowWidthBig() {
+  return window.innerWidth >= MIN_DESCTOP_WIDTH;
+}
 
 function BasePopover(_, ref) {
   const [classes, setClasses] = useState(getHiddenClasses);
@@ -20,16 +25,10 @@ function BasePopover(_, ref) {
 
   const nodeRef = useRef();
 
-  // const isSmallScreen = window.innerWidth < MIN_DESCTOP_WIDTH;
-  const [isSmallScreen, setIsSmallScreen] = useState(
-    window.innerWidth < MIN_DESCTOP_WIDTH
-  );
+  const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
   const changeWithTimer = useRef();
-  // const resizeTimer = useRef();
 
   function getHiddenClasses() {
-    // const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
-    // const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
     const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
     return `opacity-0 ${translateClass} pointer-events-none`;
   }
@@ -48,9 +47,9 @@ function BasePopover(_, ref) {
     setClasses(getHiddenClasses);
   }
 
-  function moveTo(offset) {
-    nodeRef.current.style.top = `${offset.top}px`;
-    nodeRef.current.style.left = `${offset.left}px`;
+  function moveTo({top, left}) {
+    nodeRef.current.style.top = `${top}px`;
+    nodeRef.current.style.left = `${left}px`;
   }
 
   function calculateTargetOffset(target) {
@@ -64,21 +63,21 @@ function BasePopover(_, ref) {
 
   useEffect(() => {
     function handleResize() {
-      if (screenHasBecomeSmall() || screenHasBecomeWide()) {
-        hide();
+      if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
+      // if (screenHasBecomeSmall() || screenHasBecomeBig())
+      hide();
 
-        clearTimeout(changeWithTimer.current);
-        changeWithTimer.current = setTimeout(() => {
-          setIsSmallScreen(window.innerWidth < MIN_DESCTOP_WIDTH);
-        }, 300);
-      }
+      clearTimeout(changeWithTimer.current);
+      changeWithTimer.current = setTimeout(() => {
+        setIsSmallScreen(isCurrentWindowWidthSmall);
+      }, 300);
     }
 
     function screenHasBecomeSmall() {
-      return window.innerWidth < MIN_DESCTOP_WIDTH && !isSmallScreen;
+      return isCurrentWindowWidthSmall() && !isSmallScreen;
     }
-    function screenHasBecomeWide() {
-      return window.innerWidth >= MIN_DESCTOP_WIDTH && isSmallScreen;
+    function screenHasBecomeBig() {
+      return isCurrentWindowWidthBig() && isSmallScreen;
     }
     function handleClickAway(event) {
       if (target && target.parentNode.contains(event.target)) return;

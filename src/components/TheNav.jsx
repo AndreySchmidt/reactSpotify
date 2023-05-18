@@ -1,3 +1,4 @@
+import { MIN_DESCTOP_WIDTH } from "../utils";
 import {
   HomeIcon,
   SearchIcon,
@@ -56,7 +57,7 @@ function TheNav() {
       action: (target) => {
         let offset = null;
 
-        if (window.innerWidth >= 900) {
+        if (window.innerWidth >= MIN_DESCTOP_WIDTH) {
           const { top, right, height } = target.getBoundingClientRect();
           offset = {
             top: top - (height / 3) * 2,
