@@ -1,3 +1,4 @@
+import { debounce } from "../utils";
 import {
   useImperativeHandle,
   useEffect,
@@ -24,7 +25,7 @@ function BasePopover(_, ref) {
     window.innerWidth < MIN_DESCTOP_WIDTH
   );
   const changeWithTimer = useRef();
-  const resizeTimer = useRef();
+  // const resizeTimer = useRef();
 
   function getHiddenClasses() {
     // const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
@@ -85,11 +86,7 @@ function BasePopover(_, ref) {
       if (!nodeRef.current.contains(event.target)) hide();
     }
 
-    function debounce(callback) {
-      clearTimeout(resizeTimer.current);
-      resizeTimer.current = setTimeout(callback, 300);
-    }
-    const debounceResize = debounce.bind(null, handleResize);
+    const debounceResize = debounce.bind(null, handleResize, 300);
 
     window.addEventListener("resize".debounceResize);
     document.addEventListener("mousedown".handleClickAway);
