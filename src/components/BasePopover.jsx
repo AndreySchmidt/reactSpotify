@@ -23,6 +23,8 @@ function BasePopover(_, ref) {
   const [isSmallScreen, setIsSmallScreen] = useState(
     window.innerWidth < MIN_DESCTOP_WIDTH
   );
+  const changeWithTimer = useRef();
+
   function getHiddenClasses() {
     // const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
     // const HIDDEN_CLASSES = `opacity-0 ${translateClass} pointer-events-none`;
@@ -64,7 +66,11 @@ function BasePopover(_, ref) {
     function handleResize() {
       if (screenHasBecomeSmall() || screenHasBecomeWide()) {
         hide();
-        setIsSmallScreen(window.innerWidth < MIN_DESCTOP_WIDTH);
+
+        clearTimeout(changeWithTimer.current);
+        changeWithTimer.current = setTimeout(() => {
+          setIsSmallScreen(window.innerWidth < MIN_DESCTOP_WIDTH);
+        }, 300);
       }
     }
 
@@ -102,7 +108,7 @@ function BasePopover(_, ref) {
         <BaseBtn onClick={hide}>Not now</BaseBtn>
         <BaseBtn primary>Log in</BaseBtn>
       </div>
-      <BasePopoverTriangle />
+      <BasePopoverTriangle side={isSmallScreen ? "top" : "left"} />
     </div>
   );
 }
