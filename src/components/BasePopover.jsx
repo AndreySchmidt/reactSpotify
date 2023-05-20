@@ -1,4 +1,3 @@
-import { MIN_DESCTOP_WIDTH, debounce } from "../utils";
 import usePosition from "../hooks/usePopoverPosition";
 import {
   useImperativeHandle,
@@ -11,25 +10,19 @@ import {
 import BaseBtn from "./BaseBtn";
 import BasePopoverTriangle from "./BasePopoverTriangle";
 
-function isCurrentWindowWidthSmall() {
-  return window.innerWidth < MIN_DESCTOP_WIDTH;
-}
-function isCurrentWindowWidthBig() {
-  return window.innerWidth >= MIN_DESCTOP_WIDTH;
-}
+// function isCurrentWindowWidthSmall() {
+//   return window.innerWidth < MIN_DESCTOP_WIDTH;
+// }
+// function isCurrentWindowWidthBig() {
+//   return window.innerWidth >= MIN_DESCTOP_WIDTH;
+// }
 
 function BasePopover(_, ref) {
-  const [classes, setClasses] = useState(getHiddenClasses);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-  const [target, setTarget] = useState();
-
   const nodeRef = useRef();
-
-  const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
-  const changeWithTimer = useRef();
-
-  const move = usePosition(nodeRef, isSmallScreen);
+  const { move, target, setTarget, isSmallScreen } = usePosition(nodeRef, hide);
+  const [classes, setClasses] = useState(getHiddenClasses);
 
   function getHiddenClasses() {
     const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
@@ -41,7 +34,7 @@ function BasePopover(_, ref) {
 
     move(nextTarget, offset);
     // move(offset ? offset : calculateTargetOffset(nextTarget));
-    setTarget(nextTarget);
+
     setTitle(title);
     setDescription(description);
     setClasses("");
@@ -52,37 +45,31 @@ function BasePopover(_, ref) {
   }
 
   useEffect(() => {
-    function handleResize() {
-      if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
-      // if (screenHasBecomeSmall() || screenHasBecomeBig())
-      hide();
+    // function handleResize() {
+    //   if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
+    //   // if (screenHasBecomeSmall() || screenHasBecomeBig())
+    //   hide();
 
-      clearTimeout(changeWithTimer.current);
-      changeWithTimer.current = setTimeout(() => {
-        setIsSmallScreen(isCurrentWindowWidthSmall);
-      }, 300);
-    }
+    //   clearTimeout(changeWithTimer.current);
+    //   changeWithTimer.current = setTimeout(() => {
+    //     setIsSmallScreen(isCurrentWindowWidthSmall);
+    //   }, 300);
+    // }
 
-    function screenHasBecomeSmall() {
-      return isCurrentWindowWidthSmall() && !isSmallScreen;
-    }
-    function screenHasBecomeBig() {
-      return isCurrentWindowWidthBig() && isSmallScreen;
-    }
     function handleClickAway(event) {
       if (target && target.parentNode.contains(event.target)) return;
 
       if (!nodeRef.current.contains(event.target)) hide();
     }
 
-    const debounceResize = debounce.bind(null, handleResize, 300);
+    // const debounceResize = debounce.bind(null, handleResize, 300);
 
-    window.addEventListener("resize".debounceResize);
+    // window.addEventListener("resize".debounceResize);
     document.addEventListener("mousedown".handleClickAway);
 
     return () => {
       document.removeEventListener("mousedown".handleClickAway);
-      window.removeEventListener("resize".debounceResize);
+      // window.removeEventListener("resize".debounceResize);
     };
   });
 
