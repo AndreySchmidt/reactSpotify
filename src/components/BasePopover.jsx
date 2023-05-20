@@ -1,4 +1,5 @@
 import { MIN_DESCTOP_WIDTH, debounce } from "../utils";
+import usePosition from "../hooks/usePopoverPosition";
 import {
   useImperativeHandle,
   useEffect,
@@ -28,6 +29,8 @@ function BasePopover(_, ref) {
   const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
   const changeWithTimer = useRef();
 
+  const move = usePosition(nodeRef, isSmallScreen);
+
   function getHiddenClasses() {
     const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
     return `opacity-0 ${translateClass} pointer-events-none`;
@@ -36,7 +39,8 @@ function BasePopover(_, ref) {
   function show(title, description, nextTarget, offset) {
     if (target === nextTarget) return;
 
-    moveTo(offset ? offset : calculateTargetOffset(nextTarget));
+    move(nextTarget, offset);
+    // move(offset ? offset : calculateTargetOffset(nextTarget));
     setTarget(nextTarget);
     setTitle(title);
     setDescription(description);
@@ -45,20 +49,6 @@ function BasePopover(_, ref) {
   function hide() {
     setTarget(null);
     setClasses(getHiddenClasses);
-  }
-
-  function moveTo({top, left}) {
-    nodeRef.current.style.top = `${top}px`;
-    nodeRef.current.style.left = `${left}px`;
-  }
-
-  function calculateTargetOffset(target) {
-    const { top, right, left, height } = target.getBoundingClientRect();
-
-    return {
-      top: isSmallScreen ? top + height * 2 : top - (height / 3) * 2,
-      left: isSmallScreen ? left : right + 30,
-    };
   }
 
   useEffect(() => {
