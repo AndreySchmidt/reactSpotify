@@ -1,21 +1,9 @@
 import usePosition from "../hooks/usePopoverPosition";
-import {
-  useImperativeHandle,
-  useEffect,
-  useRef,
-  useState,
-  forwardRef,
-} from "react";
+import useClickAway from "../hooks/useClickAway";
+import { useImperativeHandle, useRef, useState, forwardRef } from "react";
 
 import BaseBtn from "./BaseBtn";
 import BasePopoverTriangle from "./BasePopoverTriangle";
-
-// function isCurrentWindowWidthSmall() {
-//   return window.innerWidth < MIN_DESCTOP_WIDTH;
-// }
-// function isCurrentWindowWidthBig() {
-//   return window.innerWidth >= MIN_DESCTOP_WIDTH;
-// }
 
 function BasePopover(_, ref) {
   const [title, setTitle] = useState();
@@ -23,6 +11,12 @@ function BasePopover(_, ref) {
   const nodeRef = useRef();
   const { move, target, setTarget, isSmallScreen } = usePosition(nodeRef, hide);
   const [classes, setClasses] = useState(getHiddenClasses);
+
+  function shouldPreventHiding(event) {
+    return target && target.parentNode.contains(event.target);
+  }
+
+  useClickAway(nodeRef, hide, shouldPreventHiding);
 
   function getHiddenClasses() {
     const translateClass = isSmallScreen ? "translate-y-1" : "translate-x-1";
@@ -33,7 +27,6 @@ function BasePopover(_, ref) {
     if (target === nextTarget) return;
 
     move(nextTarget, offset);
-    // move(offset ? offset : calculateTargetOffset(nextTarget));
 
     setTitle(title);
     setDescription(description);
@@ -43,35 +36,6 @@ function BasePopover(_, ref) {
     setTarget(null);
     setClasses(getHiddenClasses);
   }
-
-  useEffect(() => {
-    // function handleResize() {
-    //   if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
-    //   // if (screenHasBecomeSmall() || screenHasBecomeBig())
-    //   hide();
-
-    //   clearTimeout(changeWithTimer.current);
-    //   changeWithTimer.current = setTimeout(() => {
-    //     setIsSmallScreen(isCurrentWindowWidthSmall);
-    //   }, 300);
-    // }
-
-    function handleClickAway(event) {
-      if (target && target.parentNode.contains(event.target)) return;
-
-      if (!nodeRef.current.contains(event.target)) hide();
-    }
-
-    // const debounceResize = debounce.bind(null, handleResize, 300);
-
-    // window.addEventListener("resize".debounceResize);
-    document.addEventListener("mousedown".handleClickAway);
-
-    return () => {
-      document.removeEventListener("mousedown".handleClickAway);
-      // window.removeEventListener("resize".debounceResize);
-    };
-  });
 
   useImperativeHandle(ref, () => ({ show }));
 
