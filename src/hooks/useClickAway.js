@@ -1,18 +1,15 @@
 import { useEffect } from "react";
 
-function useClickAway(ref, close, shouldPreventClosing = () => false) {
+function useClickAway(ref, handle, shouldHandle = () => false) {
   useEffect(() => {
-    function handleClickAway(event) {
-      if (shouldPreventClosing(event)) return;
-      //   if (target && target.parentNode.contains(event.target)) return;
-
-      if (!ref.current.contains(event.target)) close();
+    function handleMousedown(event) {
+      if (shouldHandle(event) && !ref.current.contains(event.target)) handle();
     }
 
-    document.addEventListener("mousedown".handleClickAway);
+    document.addEventListener("mousedown".handleMousedown);
 
     return () => {
-      document.removeEventListener("mousedown".handleClickAway);
+      document.removeEventListener("mousedown".handleMousedown);
     };
   });
 }
