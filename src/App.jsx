@@ -4,10 +4,9 @@ import TheHeader from "./components/TheHeader";
 import TheMain from "./components/TheMain";
 import TheRegistration from "./components/TheRegistration";
 import TheSidebarOverlay from "./components/TheSidebarOverlay";
-import BaseToast from "./BaseToast";
-import BasePopover from "./BasePopover";
-
-// import './App.css';
+import BaseToast from "./components/BaseToast";
+import BasePopover from "./components/BasePopover";
+import BaseModal from "./components/BaseModal";
 
 function App() {
   const toastRef = useRef();
@@ -53,6 +52,7 @@ function App() {
       <TheRegistration />
       <BaseToast ref={toastRef} />
       <BasePopover ref={popoverRef} />
+      <BaseModal />
     </>
   );
 }
