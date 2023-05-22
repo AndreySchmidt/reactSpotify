@@ -5,7 +5,7 @@ function BaseBtn({ primary, classes, onClick: handleClick, children: label }) {
 
   return (
     <button
-      className={`font-semibold leading-5 py-[9px] px-[48px] rounded-full hover:scale-105 ${typeClasses} ${classes}`}
+      className={`font-semibold leading-5 py-[14px] px-[48px] rounded-full hover:scale-105 ${typeClasses} ${classes}`}
       onClick={handleClick}
     >
       {label}
