@@ -1,4 +1,4 @@
-import { ChevronRight } from "@heroicons/react/outline";
+import { ChevronRight } from "@heroicons/react/24/outline";
 
 function PlaylistPlayBtn() {
   return (

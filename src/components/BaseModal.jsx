@@ -1,4 +1,4 @@
-import { XIcon } from "@heroicons/react/outline";
+import { XIcon } from "@heroicons/react/24/outline";
 
 function BaseModal() {
   return (

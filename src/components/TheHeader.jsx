@@ -2,7 +2,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   MenuIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 
 import BaseBtn from "./BaseBtn";
 

@@ -5,8 +5,7 @@ import {
   ViewBoardsIcon,
   PlusCircleIcon,
   HeartIcon,
-} from "@heroicons/react/outline";
-
+} from "@heroicons/react/24/outline";
 import NavItem from "./NavItem";
 
 const activeNavItemClasses =
