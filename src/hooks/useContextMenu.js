@@ -1,30 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import usePosition from "./useContextMenuPosition";
+import useClickAway from "./useClickAway";
 
 function useContextMenu(items) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
   const move = usePosition(ref, isOpen);
+  useClickAway(ref, close, () => isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
-
-    function handleClickAway({ target }) {
-      if (!ref.current.contains(target)) close();
-    }
 
     function handleEsc({ key }) {
       if (key === "Escape") close();
     }
 
-    document.addEventListener("mousedown", handleClickAway);
     document.addEventListener("keydown", handleEsc);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickAway);
-      document.removeEventListener("keydown", handleEsc);
-    };
+    return () => document.removeEventListener("keydown", handleEsc);
   });
 
   const open = (event) => {
