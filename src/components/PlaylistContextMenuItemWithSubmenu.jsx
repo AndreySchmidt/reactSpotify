@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-import useSubmenu from "./hook/useContextSubmenu";
+import useSubmenu from "../hooks/useContextSubmenu";
 import { useRef } from "react";
 
 function PlaylistContextMenuItemWithSubmenu({
