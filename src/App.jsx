@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TheSidebar from "./components/TheSidebar";
 import TheHeader from "./components/TheHeader";
 import TheMain from "./components/TheMain";
@@ -9,6 +9,7 @@ import BasePopover from "./components/BasePopover";
 import BaseModal from "./components/BaseModal";
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const toastRef = useRef();
   const popoverRef = useRef();
 
@@ -39,6 +40,13 @@ function App() {
     popoverRef.current.show(title, description, target, offset);
   }
 
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <>
       <div className="flex grow overflow-auto">
@@ -46,13 +54,17 @@ function App() {
         <TheSidebarOverlay />
         <div ref={contentWrapperRef} className="flex-1 overflow-auto">
           <TheHeader />
-          <TheMain showToast={showToast} toggleSrolling={toggleSrolling} />
+          <TheMain
+            openModal={openModal}
+            showToast={showToast}
+            toggleSrolling={toggleSrolling}
+          />
         </div>
       </div>
       <TheRegistration />
       <BaseToast ref={toastRef} />
       <BasePopover ref={popoverRef} />
-      <BaseModal />
+      {isModalOpen && <BaseModal onClose={closeModal} />}
     </>
   );
 }

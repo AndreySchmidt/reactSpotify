@@ -57,7 +57,7 @@ const playlists = [
   },
 ];
 
-function TheMain({ showToast, toggleSrolling }) {
+function TheMain({ openModal, showToast, toggleSrolling }) {
   return (
     <main className="text-white relative">
       <div className="h-[275px] bg-gradient-to-b from-[#1f1f1f] to-[#121212] absolute w-full"></div>
@@ -80,6 +80,7 @@ function TheMain({ showToast, toggleSrolling }) {
             {playlists.map((playlist) => (
               <Playlist
                 key={playlist.title}
+                openModal={openModal}
                 showToast={showToast}
                 toggleSrolling={toggleSrolling}
                 {...playlist}

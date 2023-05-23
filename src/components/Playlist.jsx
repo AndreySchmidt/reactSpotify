@@ -14,6 +14,7 @@ function Playlist({
   classes,
   toggleSrolling,
   showToast,
+  openModal,
 }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
@@ -25,7 +26,7 @@ function Playlist({
         label: "Add to Your Library",
         action: () => {
           menu.close();
-          document.querySelector('nav a:nth-child(4)').click();
+          document.querySelector("nav a:nth-child(4)").click();
         },
       },
       {
@@ -44,7 +45,13 @@ function Playlist({
           { label: "Embed playlist" },
         ],
       },
-      { label: "About recommendations" },
+      {
+        label: "About recommendations",
+        action: () => {
+          menu.close();
+          openModal();
+        },
+      },
       { label: "Open in Desktop app" },
     ];
   }
