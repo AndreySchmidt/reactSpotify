@@ -12,18 +12,25 @@ function BaseModal({ onClose: handleClose }) {
     });
 
     function handleEsc({ key }) {
-      if (key === "Escape") handleClose();
+      if (key === "Escape") close();
     }
 
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   });
 
+  function close() {
+    ref, current.classList.add("opacity-0");
+    contentRef, current.classList.add("-translate-y-10");
+
+    setTimeout(handleClose, 500);
+  }
+
   return (
     <div
       className="flex justify-center items-center fixed inset-0 bg-black/70 z-50 opacity-0 transition-opacity duration-500"
       role="dialog"
-      onClick={handleClose}
+      onClick={close}
       ref={ref}
     >
       <div
@@ -33,7 +40,7 @@ function BaseModal({ onClose: handleClose }) {
       >
         <button
           className="absolute right-0 p-3 text-neutral-500 hover:text-neutral-200"
-          onClick={handleClose}
+          onClick={close}
         >
           <XMarkIcon className="h-8 w-8" />
         </button>
