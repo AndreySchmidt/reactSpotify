@@ -1,5 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
+import useEvent from "../hooks/useEvent";
 
 function BaseModal({ onClose: handleClose }) {
   const ref = useRef();
@@ -7,14 +8,13 @@ function BaseModal({ onClose: handleClose }) {
 
   useEffect(() => {
     setTimeout(animate);
-
-    function handleEsc({ key }) {
-      if (key === "Escape") close();
-    }
-
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
   });
+
+  useEvent("keydown", handleEsc);
+
+  function handleEsc({ key }) {
+    if (key === "Escape") close();
+  }
 
   function close() {
     animate(true);
