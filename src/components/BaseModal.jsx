@@ -34,7 +34,7 @@ function BaseModal({ onClose: handleClose }) {
       ref={ref}
     >
       <div
-        className="bg-[#333 h-1/3 w-2/5] rounded-xl relative -translate-y-10 transition-transform duration-500"
+        className="flex flex-col bg-[#333] text-white h-80 w-[480px] rounded-xl relative -translate-y-10 transition-transform duration-500"
         onClick={(event) => event.stopPropagation()}
         ref={contentRef}
       >
@@ -44,6 +44,31 @@ function BaseModal({ onClose: handleClose }) {
         >
           <XMarkIcon className="h-8 w-8" />
         </button>
+        <h1 className="text-3xl pt-8 pb-3 px-8 font-bold leading-relaxed border-b border-neutral-600">
+          Title
+        </h1>
+        <div className="py-6 px-8 overflow-y-auto">
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text Text text Text text Text text Text text
+          Text text Text text Text text zzz
+        </div>
       </div>
     </div>
   );
