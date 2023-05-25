@@ -1,38 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MIN_DESCTOP_WIDTH, debounce } from "../utils";
+import useEvent from "./useEvent";
 
 function usePopoverPosition(ref, screenChangeCallback) {
   const [target, setTarget] = useState();
   const changeWithTimer = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
 
-  useEffect(() => {
-    function handleResize() {
-      if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
+  useEvent("resize", debounceResize, () => true, window);
 
-      screenChangeCallback();
+  function handleResize() {
+    if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;
 
-      clearTimeout(changeWithTimer.current);
-      changeWithTimer.current = setTimeout(() => {
-        setIsSmallScreen(isCurrentWindowWidthSmall);
-      }, 300);
-    }
+    screenChangeCallback();
 
-    const debounceResize = debounce.bind(null, handleResize, 300);
-    window.addEventListener("resize".debounceResize);
+    clearTimeout(changeWithTimer.current);
+    changeWithTimer.current = setTimeout(() => {
+      setIsSmallScreen(isCurrentWindowWidthSmall);
+    }, 300);
+  }
 
-    return () => {
-      window.removeEventListener("resize".debounceResize);
-    };
+  const debounceResize = debounce.bind(null, handleResize, 300);
 
-    function screenHasBecomeSmall() {
-      return isCurrentWindowWidthSmall() && !isSmallScreen;
-    }
-    function screenHasBecomeBig() {
-      return isCurrentWindowWidthBig() && isSmallScreen;
-    }
-  });
-
+  function screenHasBecomeSmall() {
+    return isCurrentWindowWidthSmall() && !isSmallScreen;
+  }
+  function screenHasBecomeBig() {
+    return isCurrentWindowWidthBig() && isSmallScreen;
+  }
   function isCurrentWindowWidthSmall() {
     return window.innerWidth < MIN_DESCTOP_WIDTH;
   }
@@ -41,7 +36,6 @@ function usePopoverPosition(ref, screenChangeCallback) {
   }
 
   function move(target, offset) {
-    // offset = offset ? offset : calculateTargetOffset(target);
     offset = offset || calculateTargetOffset(target);
     ref.current.style.top = `${offset.top}px`;
     ref.current.style.left = `${offset.left}px`;
