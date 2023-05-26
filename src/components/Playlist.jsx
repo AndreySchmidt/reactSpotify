@@ -3,7 +3,7 @@ import PlaylistPlayBtn from "./PlaylistPlayBtn";
 import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-
+import BaseModal from "./BaseModal";
 import useMenu from "../hooks/useContextMenu";
 import { useLayoutEffect, useState } from "react";
 import useEvent from "../hooks/useEvent";
@@ -15,8 +15,8 @@ function Playlist({
   classes,
   toggleSrolling,
   showToast,
-  openModal,
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
   const menu = useMenu(menuItems);
@@ -71,6 +71,13 @@ function Playlist({
     if (key === "Alt") setMenuItems(generateMenuItems(false));
   }
 
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   const bgClasses = menu.isOpen
     ? "bg-[#272727]"
     : "bg-[#181818] hover:bg-[#272727]";
@@ -98,6 +105,7 @@ function Playlist({
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
+      {isModalOpen && <BaseModal onClose={closeModal} />}
     </a>
   );
 }

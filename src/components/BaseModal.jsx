@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom";
+
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
 import useEvent from "../hooks/useEvent";
@@ -26,7 +28,7 @@ function BaseModal({ onClose: handleClose }) {
     contentRef, current.classList.toggle("-translate-y-10", isClosing);
   }
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className="flex justify-center items-center fixed inset-0 bg-black/70 z-50 opacity-0 transition-opacity duration-500"
       role="dialog"
@@ -47,30 +49,10 @@ function BaseModal({ onClose: handleClose }) {
         <h1 className="text-3xl pt-8 pb-3 px-8 font-bold leading-relaxed border-b border-neutral-600">
           Title
         </h1>
-        <div className="py-6 px-8 overflow-y-auto">
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text Text text Text text Text text Text text
-          Text text Text text Text text zzz
-        </div>
+        <div className="py-6 px-8 overflow-y-auto">Text</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
