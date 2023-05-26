@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TheSidebar from "./components/TheSidebar";
 import TheHeader from "./components/TheHeader";
 import TheMain from "./components/TheMain";
@@ -7,6 +7,7 @@ import TheSidebarOverlay from "./components/TheSidebarOverlay";
 import BaseToast from "./components/BaseToast";
 import BasePopover from "./components/BasePopover";
 import BaseModal from "./components/BaseModal";
+import useEvent from "./hooks/useEvent";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,11 +17,12 @@ function App() {
   const contentWrapperRef = useRef();
   let isScrollingEnabled = true;
 
-  useEffect(() => {
-    const contentWrapper = contentWrapperRef.current;
-    contentWrapper.addEventListener("wheel", handleScrolling);
-    return () => contentWrapper.removeEventListener("wheel", handleScrolling);
-  });
+  useEvent(
+    "wheel",
+    handleScrolling,
+    () => true,
+    () => contentWrapperRef.current
+  );
 
   function toggleSrolling(isEnabled) {
     isScrollingEnabled = isEnabled;
