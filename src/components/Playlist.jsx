@@ -3,10 +3,10 @@ import PlaylistPlayBtn from "./PlaylistPlayBtn";
 import PlaylistTitle from "./PlaylistTitle";
 import PlaylistDescription from "./PlaylistDescription";
 import PlaylistContextMenu from "./PlaylistContextMenu";
-import BaseModal from "./BaseModal";
 import useMenu from "../hooks/useContextMenu";
 import { useLayoutEffect, useState } from "react";
 import useEvent from "../hooks/useEvent";
+import TheModalRecomendations from "./TheModalRecomendations";
 
 function Playlist({
   coverUrl,
@@ -105,7 +105,7 @@ function Playlist({
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
-      {isModalOpen && <BaseModal onClose={closeModal} />}
+      {isModalOpen && <TheModalRecomendations onClose={closeModal} />}
     </a>
   );
 }
