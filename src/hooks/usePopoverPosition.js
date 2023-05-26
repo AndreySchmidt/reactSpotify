@@ -7,7 +7,7 @@ function usePopoverPosition(ref, screenChangeCallback) {
   const changeWithTimer = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(isCurrentWindowWidthSmall);
 
-  useEvent("resize", debounceResize, () => true, window);
+  useEvent("resize", debounceResize, true, window);
 
   function handleResize() {
     if (!screenHasBecomeSmall() && !screenHasBecomeBig()) return;

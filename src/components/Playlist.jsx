@@ -61,8 +61,8 @@ function Playlist({
     toggleSrolling(!menu.isOpen);
   });
 
-  useEvent("keydown", handleAltKeydown, () => menu.isOpen);
-  useEvent("keyup", handleAltKeyup, () => menu.isOpen);
+  useEvent("keydown", handleAltKeydown, menu.isOpen);
+  useEvent("keyup", handleAltKeyup, menu.isOpen);
 
   function handleAltKeydown({ key }) {
     if (key === "Alt") setMenuItems(generateMenuItems(true));

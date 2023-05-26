@@ -17,12 +17,7 @@ function App() {
   const contentWrapperRef = useRef();
   let isScrollingEnabled = true;
 
-  useEvent(
-    "wheel",
-    handleScrolling,
-    () => true,
-    () => contentWrapperRef.current
-  );
+  useEvent("wheel", handleScrolling, true, () => contentWrapperRef.current);
 
   function toggleSrolling(isEnabled) {
     isScrollingEnabled = isEnabled;
