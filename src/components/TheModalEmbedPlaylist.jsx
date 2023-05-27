@@ -16,7 +16,7 @@ function TheModalEmbedPlaylist({ onClose: handleClose }) {
       </div>
       <div className="flex justify-end items-center gap-4 pb-6 px-8">
         <label className="inline-flex items-center gap-2">
-          <input classname="text-[#1bd760] bg-transparent border-neutral-500 rounded-sm hover:border-[#1bd760] !ring-0 !ring-offset-0" type="checkbox" />
+          <input classname="text-[#1bd760] bg-transparent border-neutral-500 rounded-sm hover:border-[#1bd760] !ring-0 !ring-offset-0 checked:bg-checkbox" type="checkbox" />
           <span className="text-sm text-neutral-400">Show code</span>
         </label>
         <BaseBtn accent>Copy</BaseBtn>
