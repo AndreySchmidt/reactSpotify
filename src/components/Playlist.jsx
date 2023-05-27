@@ -7,6 +7,7 @@ import useMenu from "../hooks/useContextMenu";
 import { useLayoutEffect, useState } from "react";
 import useEvent from "../hooks/useEvent";
 import TheModalRecomendations from "./TheModalRecomendations";
+import TheModalEmbedPlaylist from "./TheModalEmbedPlaylist";
 import { useModal } from "../hooks/useModal";
 
 function Playlist({
@@ -19,7 +20,9 @@ function Playlist({
 }) {
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
-  const modal = useModal();
+  const embedPlaylistModal = useModal();
+  const recomendationsModal = useModal();
+
   const menu = useMenu(menuItems);
 
   function generateMenuItems(isAlternate = false) {
@@ -44,14 +47,20 @@ function Playlist({
               });
             },
           },
-          { label: "Embed playlist" },
+          {
+            label: "Embed playlist",
+            action: () => {
+              menu.close();
+              embedPlaylistModal.open();
+            },
+          },
         ],
       },
       {
         label: "About recommendations",
         action: () => {
           menu.close();
-          modal.open();
+          recomendationsModal.open();
         },
       },
       { label: "Open in Desktop app" },
@@ -99,7 +108,12 @@ function Playlist({
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
-      {modal.isOpen && <TheModalRecomendations onClose={modal.close} />}
+      {recomendationsModal.isOpen && (
+        <TheModalRecomendations onClose={recomendationsModal.close} />
+      )}
+      {embedPlaylistModal.isOpen && (
+        <TheModalEmbedPlaylist onClose={embedPlaylistModal.close} />
+      )}
     </a>
   );
 }
