@@ -15,7 +15,7 @@ function TheModalEmbedPlaylist({ onClose: handleClose }) {
         modal
       </div>
       <div className="text-right pb-6 px-8">
-        <BaseBtn>Copy</BaseBtn>
+        <BaseBtn accent>Copy</BaseBtn>
       </div>
     </BaseModal>
   );
