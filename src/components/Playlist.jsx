@@ -7,6 +7,7 @@ import useMenu from "../hooks/useContextMenu";
 import { useLayoutEffect, useState } from "react";
 import useEvent from "../hooks/useEvent";
 import TheModalRecomendations from "./TheModalRecomendations";
+import { useModal } from "../hooks/useModal";
 
 function Playlist({
   coverUrl,
@@ -16,9 +17,9 @@ function Playlist({
   toggleSrolling,
   showToast,
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(generateMenuItems);
 
+  const modal = useModal();
   const menu = useMenu(menuItems);
 
   function generateMenuItems(isAlternate = false) {
@@ -50,7 +51,7 @@ function Playlist({
         label: "About recommendations",
         action: () => {
           menu.close();
-          openModal();
+          modal.open();
         },
       },
       { label: "Open in Desktop app" },
@@ -69,13 +70,6 @@ function Playlist({
   }
   function handleAltKeyup({ key }) {
     if (key === "Alt") setMenuItems(generateMenuItems(false));
-  }
-
-  function openModal() {
-    setIsModalOpen(true);
-  }
-  function closeModal() {
-    setIsModalOpen(false);
   }
 
   const bgClasses = menu.isOpen
@@ -105,7 +99,7 @@ function Playlist({
           classes="fixed divide-y divide-[#3e3e3e]"
         />
       )}
-      {isModalOpen && <TheModalRecomendations onClose={closeModal} />}
+      {modal.isOpen && <TheModalRecomendations onClose={modal.close} />}
     </a>
   );
 }
