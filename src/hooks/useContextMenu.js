@@ -16,16 +16,17 @@ function useContextMenu(items) {
     if (key === "Escape") close();
   }
 
-  const open = (event) => {
+  function open(event) {
     event.preventDefault();
 
     move(event.clientX, event.clientY);
 
     setIsOpen(true);
   };
-  const close = () => {
+
+  function close() {
     setIsOpen(false);
-  };
+  }
 
   return {
     open,

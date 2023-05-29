@@ -4,7 +4,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const root = createRoot(document.getElementById("root"));
+const container = document.getElementById("app");
+const root = createRoot(container);
 root.render(
   <StrictMode>
     <App />

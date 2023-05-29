@@ -8,18 +8,19 @@ function useContextMenuPosition(ref, isOpen) {
   });
 
   function updatePosition() {
-    updateXPosition();
-    updateYPosition();
+    updateVerticalPosition();
+    updateHorizontalPosition();
   }
 
-  function updateYPosition() {
+  function updateVerticalPosition() {
     const y = clickPosition.y;
     const menuHeight = ref.current.offsetHeight;
     const shouldMoveUp = menuHeight > window.innerHeight - y;
 
     ref.current.style.top = `${shouldMoveUp ? y - menuHeight : y}px`;
   }
-  function updateXPosition() {
+  
+  function updateHorizontalPosition() {
     const x = clickPosition.x;
     const menuWidth = ref.current.offsetWidth;
     const shouldMoveLeft = menuWidth > window.innerWidth - x;

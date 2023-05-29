@@ -24,8 +24,8 @@ function BaseModal({ classes, onClose: handleClose, children }) {
   }
 
   function animate(isClosing = false) {
-    ref, current.classList.toggle("opacity-0", isClosing);
-    contentRef, current.classList.toggle("-translate-y-10", isClosing);
+    ref.current.classList.toggle("opacity-0", isClosing);
+    contentRef.current.classList.toggle("-translate-y-10", isClosing);
   }
 
   return ReactDOM.createPortal(

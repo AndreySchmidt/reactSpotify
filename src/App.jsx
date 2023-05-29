@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import TheSidebar from "./components/TheSidebar";
 import TheHeader from "./components/TheHeader";
 import TheMain from "./components/TheMain";
@@ -9,10 +9,10 @@ import BasePopover from "./components/BasePopover";
 import useEvent from "./hooks/useEvent";
 
 function App() {
+  const contentWrapperRef = useRef();
   const toastRef = useRef();
   const popoverRef = useRef();
 
-  const contentWrapperRef = useRef();
   let isScrollingEnabled = true;
 
   useEvent("wheel", handleScrolling, true, () => contentWrapperRef.current);

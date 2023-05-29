@@ -8,7 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import useEvent from "../hooks/useEvent";
 import TheModalRecomendations from "./TheModalRecomendations";
 import TheModalEmbedPlaylist from "./TheModalEmbedPlaylist";
-import { useModal } from "../hooks/useModal";
+import useModal from "../hooks/useModal";
 
 function Playlist({
   coverUrl,
@@ -101,7 +101,7 @@ function Playlist({
       <PlaylistTitle title={title} />
       <PlaylistDescription description={description} />
 
-      {isContextMenuOpen && (
+      {menu.isOpen && (
         <PlaylistContextMenu
           ref={menu.ref}
           menuItems={menu.items}

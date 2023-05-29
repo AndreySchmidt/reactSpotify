@@ -13,7 +13,7 @@ const activeNavItemClasses =
 const navItemClasses =
   "flex items-center hover:text-white mx-2 px-4 py-2 rounded duration-300";
 
-function TheNav() {
+function TheNav({ showPopover }) {
   const navItems = [
     {
       label: "Home",
@@ -62,22 +62,24 @@ function TheNav() {
             top: top - (height / 3) * 2,
             left: right + 130,
           };
-
-          showPopover(
-            "Enjoy your liked songs",
-            "Log in to see all the songs ...",
-            target,
-            offset
-          );
         }
+
+        showPopover(
+          "Enjoy your liked songs",
+          "Log in to see all the songs ...",
+          target,
+          offset
+        );
       },
     },
   ];
 
   return (
     <nav>
-      {navItems.map(({ label, classes, action, icon }) => (
-        <NavItem key={label} classes={classes} icon={icon} onClick={action} />
+      {navItems.map(({ classes, icon, label, action }) => (
+        <NavItem key={label} classes={classes} icon={icon} onClick={action}>
+          {label}
+        </NavItem>
       ))}
     </nav>
   );

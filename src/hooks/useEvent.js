@@ -6,7 +6,7 @@ function useEvent(name, handler, shouldHandle = true, target = document) {
       shouldHandle instanceof Function ? shouldHandle() : shouldHandle;
     if (!handle) return;
 
-    const node = (target = target instanceof Function ? target() : target);
+    const node = target instanceof Function ? target() : target;
 
     node.addEventListener(name, handler);
     return () => node.removeEventListener(name, handler);
